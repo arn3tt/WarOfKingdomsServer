@@ -1,7 +1,5 @@
 package com.warofkingdoms.server.networking.handlers;
 
-import java.util.List;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,8 +17,10 @@ import com.warofkingdoms.server.entities.Tower;
 import com.warofkingdoms.server.entities.Unit;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.exceptions.WrongRoomPasswordException;
+import com.warofkingdoms.server.management.GameManager;
 import com.warofkingdoms.server.management.RoomMananger;
 import com.warofkingdoms.server.networking.entities.JoinRoomRequest;
+import com.warofkingdoms.server.networking.entities.StartGameRequest;
 
 /**
  * Tutorial followed:
@@ -30,57 +30,19 @@ import com.warofkingdoms.server.networking.entities.JoinRoomRequest;
  * @author Arnett
  *
  */
-@Path("/rooms")
-public class RoomRequestsHandler {
-
-	private static int numPlayersConnected = 0;
+@Path("/games")
+public class GameRequestsHandler {
 
 	@POST
-	@Path("/getPrivateRooms")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Room> getPrivateRooms() {
-		return RoomMananger.getInstance().getPrivateRooms();
-	}
-
-	@POST
-	@Path("/joinPublicRoom")
+	@Path("/startGame")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean joinPublicRoom(JoinRoomRequest request) {
-		// TODO Not implemented yet
-		return false;
-
-		// numPlayersConnected++;
-		// if (numPlayersConnected % 2 == 0) {
-		// OurSemaphore.getInstance().getSemaphore().release(1);
-		// } else {
-		// try {
-		// OurSemaphore.getInstance().getSemaphore().acquire();
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// return Response.status(200).entity("> "+ roomId + " " +
-		// player.toString()).build();
-	}
-
-	@POST
-	@Path("/joinPrivateRoom")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public boolean joinPrivateRoom(JoinRoomRequest request) {
-		int roomId = request.getRoomId();
-		Player player = request.getPlayer();
-		String roomPassword = request.getRoomPassword();
-
+	public boolean startGame(StartGameRequest request) {
 		try {
-			Room room = RoomMananger.getInstance().getById(roomId);
-			room.addPlayer(player, roomPassword);
+			Room room = RoomMananger.getInstance().getById(request.getRoomId());
+			GameManager game = room.getGameManager();
 			return true;
 		} catch (RoomNotFoundException e) {
-			// TODO Improve error status
-			return false;
-		} catch (WrongRoomPasswordException e) {
 			// TODO Improve error status
 			return false;
 		}

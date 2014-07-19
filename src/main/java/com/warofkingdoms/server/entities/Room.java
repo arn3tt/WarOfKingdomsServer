@@ -1,25 +1,28 @@
 package com.warofkingdoms.server.entities;
 
 import com.warofkingdoms.server.exceptions.WrongRoomPasswordException;
+import com.warofkingdoms.server.management.GameManager;
 
 public class Room {
 
 	private int id;
-	private Game game;
 	private boolean isPrivate;
 	private String password;
+	private TemplateMap mapId;
+
+	private GameManager game;
 
 	// Must have no-argument constructor
 	public Room() {
 
 	}
-	
-	public Room(int id, Game game, boolean isPrivate, String password) {
-		super();
+
+	public Room(int id, boolean isPrivate, String password, TemplateMap mapId) {
 		this.id = id;
-		this.game = game;
 		this.isPrivate = isPrivate;
 		this.password = password;
+		this.mapId = mapId;
+		this.game = new GameManager(mapId);
 	}
 
 	public boolean isFull() {
@@ -44,11 +47,11 @@ public class Room {
 		this.id = id;
 	}
 
-	public Game getGame() {
+	public GameManager getGameManager() {
 		return game;
 	}
 
-	public void setGame(Game game) {
+	public void setGameGameManager(GameManager game) {
 		this.game = game;
 	}
 
@@ -66,6 +69,14 @@ public class Room {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public TemplateMap getMapId() {
+		return mapId;
+	}
+
+	public void setMapId(TemplateMap mapId) {
+		this.mapId = mapId;
 	}
 
 }
