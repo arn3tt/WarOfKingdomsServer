@@ -6,8 +6,16 @@ public class Territory extends Unit {
 
 	}
 
-	public Territory(int resourcesGainedPerRound) {
+	public Territory(int resourcesGainedPerRound, String name) {
 		setResourcesGainedPerRound(resourcesGainedPerRound);
+		setName(name);
 	}
 
+	@Override
+	public Territory clone() {
+		Territory t = new Territory();
+		t.setResourcesGainedPerRound(getResourcesGainedPerRound());
+		t.setName(getName());
+		return t;
+	}
 }

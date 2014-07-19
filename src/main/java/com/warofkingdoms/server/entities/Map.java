@@ -1,36 +1,30 @@
 package com.warofkingdoms.server.entities;
 
+import java.util.List;
+
 public class Map {
 
-	private int id;
-	private String name;
+	private TemplateMap template;
 	private int numPlayers;
+	private List<Unit> conquerableUnits;
 
 	// Must have no-argument constructor
 	public Map() {
 
 	}
 
-	public Map(int id, String name, int numPlayers) {
-		this.id = id;
-		this.name = name;
+	public Map(TemplateMap template, int numPlayers, List<Unit> conquerableUnits) {
+		this.template = template;
 		this.numPlayers = numPlayers;
+		this.conquerableUnits = conquerableUnits;
 	}
 
-	public int getId() {
-		return id;
+	public TemplateMap getTemplate() {
+		return template;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	
+	public void setTemplate(TemplateMap template) {
+		this.template = template;
 	}
 
 	public int getNumPlayers() {
@@ -41,4 +35,11 @@ public class Map {
 		this.numPlayers = numPlayers;
 	}
 
+	public List<Unit> getConquerableUnits() {
+		return conquerableUnits;
+	}
+
+	public void setConquerableUnits(List<Unit> conquerableUnits) {
+		this.conquerableUnits = conquerableUnits;
+	}
 }

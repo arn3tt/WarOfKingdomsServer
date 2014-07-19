@@ -9,7 +9,8 @@ public class Castle extends Unit {
 
 	}
 
-	public Castle(int resourcesGainedPerRound, int level) {
+	public Castle(int resourcesGainedPerRound, int level, String name) {
+		setName(name);
 		setResourcesGainedPerRound(resourcesGainedPerRound);
 		setLevel(level);
 	}
@@ -20,5 +21,14 @@ public class Castle extends Unit {
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+
+	@Override
+	public Castle clone() {
+		Castle c = new Castle();
+		c.setResourcesGainedPerRound(getResourcesGainedPerRound());
+		c.setName(getName());
+		c.setLevel(level);
+		return c;
 	}
 }

@@ -9,17 +9,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.warofkingdoms.server.entities.Castle;
-import com.warofkingdoms.server.entities.Player;
 import com.warofkingdoms.server.entities.Room;
 import com.warofkingdoms.server.entities.Student;
 import com.warofkingdoms.server.entities.Territory;
 import com.warofkingdoms.server.entities.Tower;
 import com.warofkingdoms.server.entities.Unit;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
-import com.warofkingdoms.server.exceptions.WrongRoomPasswordException;
 import com.warofkingdoms.server.management.GameManager;
 import com.warofkingdoms.server.management.RoomMananger;
-import com.warofkingdoms.server.networking.entities.JoinRoomRequest;
+import com.warofkingdoms.server.networking.entities.JoinPrivateRoomRequest;
 import com.warofkingdoms.server.networking.entities.StartGameRequest;
 
 /**
@@ -54,7 +52,7 @@ public class GameRequestsHandler {
 	@Path("/test")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public JoinRoomRequest test(JoinRoomRequest request) {
+	public JoinPrivateRoomRequest test(JoinPrivateRoomRequest request) {
 		Unit position = request.getPlayer().getTroops().get(0).getPosition();
 
 		if (position instanceof Castle) {

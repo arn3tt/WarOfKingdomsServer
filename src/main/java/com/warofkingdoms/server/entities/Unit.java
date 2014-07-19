@@ -11,6 +11,7 @@ import org.codehaus.jackson.annotate.JsonTypeInfo;
 public abstract class Unit {
 
 	private int resourcesGainedPerRound;
+	private String name;
 
 	public int getResourcesGainedPerRound() {
 		return resourcesGainedPerRound;
@@ -20,4 +21,19 @@ public abstract class Unit {
 		this.resourcesGainedPerRound = resourcesGainedPerRound;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * This method should never be called. Call the subclass clone() instead.
+	 */
+	@Override
+	public Unit clone() {
+		return null;
+	}
 }
