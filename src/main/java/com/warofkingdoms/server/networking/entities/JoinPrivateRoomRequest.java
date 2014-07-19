@@ -2,20 +2,22 @@ package com.warofkingdoms.server.networking.entities;
 
 import com.warofkingdoms.server.entities.Player;
 
-public class JoinRoomRequest {
+public class JoinPrivateRoomRequest {
 
 	private Player player;
 	private int roomId;
 	private String roomPassword;
+	private int mapId;
 
 	// Must have no-argument constructor
-	public JoinRoomRequest() {
+	public JoinPrivateRoomRequest() {
 
 	}
 
-	public JoinRoomRequest(Player player, int roomId) {
+	public JoinPrivateRoomRequest(Player player, int roomId, int mapId) {
 		this.player = player;
 		this.roomId = roomId;
+		this.mapId = mapId;
 	}
 
 	public Player getPlayer() {
@@ -41,4 +43,13 @@ public class JoinRoomRequest {
 	public void setRoomPassword(String roomPassword) {
 		this.roomPassword = roomPassword;
 	}
+
+	public int getMapId() {
+		return mapId;
+	}
+
+	public void setMapId(int mapId) {
+		this.mapId = mapId;
+	}
+
 }

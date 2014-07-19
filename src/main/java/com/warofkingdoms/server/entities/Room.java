@@ -6,6 +6,7 @@ import com.warofkingdoms.server.management.GameManager;
 public class Room {
 
 	private int id;
+	private String name;
 	private boolean isPrivate;
 	private String password;
 	private TemplateMap mapId;
@@ -37,6 +38,10 @@ public class Room {
 		}
 	}
 
+	public void addPlayer(Player player) {
+		game.addPlayer(player);
+	}
+	
 	// Getters and Setters
 
 	public int getId() {
@@ -77,6 +82,14 @@ public class Room {
 
 	public void setMapId(TemplateMap mapId) {
 		this.mapId = mapId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

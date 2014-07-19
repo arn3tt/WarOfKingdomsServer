@@ -3,24 +3,20 @@ package com.warofkingdoms.server.networking.handlers;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.warofkingdoms.server.entities.Castle;
 import com.warofkingdoms.server.entities.Player;
 import com.warofkingdoms.server.entities.Room;
-import com.warofkingdoms.server.entities.Student;
-import com.warofkingdoms.server.entities.Territory;
-import com.warofkingdoms.server.entities.Tower;
-import com.warofkingdoms.server.entities.Unit;
+import com.warofkingdoms.server.entities.TemplateMap;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.exceptions.WrongRoomPasswordException;
 import com.warofkingdoms.server.management.RoomMananger;
-import com.warofkingdoms.server.networking.entities.JoinRoomRequest;
+import com.warofkingdoms.server.networking.entities.CreatePrivateRoomRequest;
+import com.warofkingdoms.server.networking.entities.JoinPrivateRoomRequest;
+import com.warofkingdoms.server.networking.entities.JoinPublicRoomRequest;
 
 /**
  * Tutorial followed:
@@ -41,14 +37,32 @@ public class RoomRequestsHandler {
 	public List<Room> getPrivateRooms() {
 		return RoomMananger.getInstance().getPrivateRooms();
 	}
+	
+	@POST
+	@Path("/createPrivateRoom")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean createPrivateRoom(CreatePrivateRoomRequest request) {
+		
+		String roomName = request.getRoomName();
+		String roomPassword = request.getRoomPassword();
+		TemplateMap mapId = getTemplateMap(request.getMapId());
+		
+		RoomMananger.getInstance().addRoom(roomName, roomPassword, mapId);
+		return true;
+	}
 
 	@POST
 	@Path("/joinPublicRoom")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean joinPublicRoom(JoinRoomRequest request) {
-		// TODO Not implemented yet
-		return false;
+	public boolean joinPublicRoom(JoinPublicRoomRequest request) {
+		
+		Player player = request.getPlayer();
+		TemplateMap mapId = getTemplateMap(request.getMapId());
+		
+		RoomMananger.getInstance().addPlayerIntoPublicRoom(player, mapId);
+		return true;
 
 		// numPlayersConnected++;
 		// if (numPlayersConnected % 2 == 0) {
@@ -64,18 +78,26 @@ public class RoomRequestsHandler {
 		// player.toString()).build();
 	}
 
+	private TemplateMap getTemplateMap(int mapId) {
+		
+		if (mapId == TemplateMap.GAME_OF_THRONES.id) {
+			return TemplateMap.GAME_OF_THRONES;
+		}
+		return TemplateMap.GAME_OF_THRONES;
+	}
+
 	@POST
 	@Path("/joinPrivateRoom")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean joinPrivateRoom(JoinRoomRequest request) {
+	public boolean joinPrivateRoom(JoinPrivateRoomRequest request) {
+		
 		int roomId = request.getRoomId();
 		Player player = request.getPlayer();
 		String roomPassword = request.getRoomPassword();
 
 		try {
-			Room room = RoomMananger.getInstance().getById(roomId);
-			room.addPlayer(player, roomPassword);
+			RoomMananger.getInstance().addPlayerIntoPrivateRoom(player, roomId, roomPassword);
 			return true;
 		} catch (RoomNotFoundException e) {
 			// TODO Improve error status
@@ -86,33 +108,5 @@ public class RoomRequestsHandler {
 		}
 	}
 
-	// Testing
 
-	@POST
-	@Path("/test")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public JoinRoomRequest test(JoinRoomRequest request) {
-		Unit position = request.getPlayer().getTroops().get(0).getPosition();
-
-		if (position instanceof Castle) {
-			request.setRoomId(-1);
-		} else if (position instanceof Territory) {
-			request.setRoomId(-2);
-		} else if (position instanceof Tower) {
-			request.setRoomId(-3);
-		} else {
-			request.setRoomId(-300);
-		}
-
-		return null;
-	}
-
-	@GET
-	@Path("/print/{name}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Student aloha(@PathParam("name") String name) {
-		Student st = new Student(name, "Dias", 22, 1);
-		return st;
-	}
 }
