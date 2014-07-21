@@ -4,26 +4,26 @@ import java.util.List;
 
 public class Map {
 
-	private TemplateMap template;
+	private MapTemplate template;
 	private int numPlayers;
-	private List<Unit> conquerableUnits;
+	private List<Unit> units;
 
 	// Must have no-argument constructor
 	public Map() {
 
 	}
 
-	public Map(TemplateMap template, int numPlayers, List<Unit> conquerableUnits) {
+	public Map(MapTemplate template, int numPlayers, List<Unit> units) {
 		this.template = template;
 		this.numPlayers = numPlayers;
-		this.conquerableUnits = conquerableUnits;
+		this.units = units;
 	}
 
-	public TemplateMap getTemplate() {
+	public MapTemplate getTemplate() {
 		return template;
 	}
-	
-	public void setTemplate(TemplateMap template) {
+
+	public void setTemplate(MapTemplate template) {
 		this.template = template;
 	}
 
@@ -35,11 +35,11 @@ public class Map {
 		this.numPlayers = numPlayers;
 	}
 
-	public List<Unit> getConquerableUnits() {
-		return conquerableUnits;
+	public void setUnits(List<Unit> units) {
+		this.units = units;
 	}
 
-	public void setConquerableUnits(List<Unit> conquerableUnits) {
-		this.conquerableUnits = conquerableUnits;
+	public List<Unit> getUnits() {
+		return units;
 	}
 }

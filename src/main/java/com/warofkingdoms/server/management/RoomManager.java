@@ -5,65 +5,58 @@ import java.util.List;
 
 import com.warofkingdoms.server.entities.Player;
 import com.warofkingdoms.server.entities.Room;
-import com.warofkingdoms.server.entities.TemplateMap;
+import com.warofkingdoms.server.entities.MapTemplate;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.exceptions.WrongRoomPasswordException;
 
-public class RoomMananger {
+public class RoomManager {
 
-	private static RoomMananger instance;
+	private static RoomManager instance;
 
 	private List<Room> rooms = new ArrayList<Room>();
 
-	private RoomMananger() {
+	private RoomManager() {
 	}
 
-	public synchronized static RoomMananger getInstance() {
+	public synchronized static RoomManager getInstance() {
 		if (instance == null) {
-			instance = new RoomMananger();
+			instance = new RoomManager();
 		}
 		return instance;
 	}
-	
-	public synchronized void addRoom(String roomName, String roomPassword, TemplateMap mapId) {
-		Room room = new Room(rooms.size(), true, roomPassword, mapId);
+
+	public synchronized void addRoom(String roomName, String roomPassword,
+			MapTemplate mapId) {
+		Room room = new Room(rooms.size(), roomName, true, roomPassword, mapId);
 		rooms.add(room);
 	}
 
-	public synchronized void addPlayerIntoPublicRoom(Player player, TemplateMap mapId) {
-		
+	public synchronized void addPlayerIntoPublicRoom(Player player,
+			MapTemplate mapId) {
 		Room room = getNextAvailablePublicRoom(mapId);
 		room.addPlayer(player);
 	}
-	
-	public synchronized void addPlayerIntoPrivateRoom(
-			Player player, 
-			int roomId, 
-			String roomPassword) 
-					throws RoomNotFoundException, WrongRoomPasswordException {
-		
+
+	public synchronized void addPlayerIntoPrivateRoom(Player player,
+			int roomId, String roomPassword) throws RoomNotFoundException,
+			WrongRoomPasswordException {
 		Room room = getById(roomId);
 		room.addPlayer(player, roomPassword);
 	}
-	
-	public Room getNextAvailablePublicRoom(TemplateMap mapId) {
-		
+
+	public Room getNextAvailablePublicRoom(MapTemplate mapId) {
 		for (Room aRoom : rooms) {
-			
-			if (!aRoom.isPrivate() 
-					&& !aRoom.isFull()
-					&& aRoom.getMapId() == mapId) {
+			if (!aRoom.isPrivate() && !aRoom.isFull()
+					&& aRoom.getMapTemplate() == mapId) {
 				return aRoom;
 			}
 		}
-		
-		// there is no public room available
+		// There is no public room available
 		return createPublicRoom(mapId);
 	}
 
-	private synchronized Room createPublicRoom(TemplateMap mapId) {
-		
-		Room newRoom = new Room(rooms.size(), false, "", mapId);
+	private synchronized Room createPublicRoom(MapTemplate mapId) {
+		Room newRoom = new Room(rooms.size(), "Public Room", false, "", mapId);
 		rooms.add(newRoom);
 		return newRoom;
 	}
@@ -74,20 +67,18 @@ public class RoomMananger {
 		}
 		throw new RoomNotFoundException(roomId);
 	}
-	
+
 	public List<Room> getPrivateRooms() {
 		return rooms;
 	}
-	
+
 	public List<Room> getPublicRooms() {
-		
 		List<Room> publicRooms = new ArrayList<Room>();
 		for (Room aRoom : rooms) {
 			if (!aRoom.isPrivate()) {
 				publicRooms.add(aRoom);
 			}
 		}
-		
 		return publicRooms;
 	}
 
@@ -95,4 +86,12 @@ public class RoomMananger {
 		this.rooms = rooms;
 	}
 
+	// TODO DELETE
+
+	private Room testRoom = new Room(0, "Test Room", false, "",
+			MapTemplate.GAME_OF_THRONES);
+
+	public Room getTestRoom() throws RoomNotFoundException {
+		return testRoom;
+	}
 }

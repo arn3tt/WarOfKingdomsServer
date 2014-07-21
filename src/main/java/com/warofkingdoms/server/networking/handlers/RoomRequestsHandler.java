@@ -10,10 +10,10 @@ import javax.ws.rs.core.MediaType;
 
 import com.warofkingdoms.server.entities.Player;
 import com.warofkingdoms.server.entities.Room;
-import com.warofkingdoms.server.entities.TemplateMap;
+import com.warofkingdoms.server.entities.MapTemplate;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.exceptions.WrongRoomPasswordException;
-import com.warofkingdoms.server.management.RoomMananger;
+import com.warofkingdoms.server.management.RoomManager;
 import com.warofkingdoms.server.networking.entities.CreatePrivateRoomRequest;
 import com.warofkingdoms.server.networking.entities.JoinPrivateRoomRequest;
 import com.warofkingdoms.server.networking.entities.JoinPublicRoomRequest;
@@ -35,20 +35,20 @@ public class RoomRequestsHandler {
 	@Path("/getPrivateRooms")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Room> getPrivateRooms() {
-		return RoomMananger.getInstance().getPrivateRooms();
+		return RoomManager.getInstance().getPrivateRooms();
 	}
-	
+
 	@POST
 	@Path("/createPrivateRoom")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean createPrivateRoom(CreatePrivateRoomRequest request) {
-		
+
 		String roomName = request.getRoomName();
 		String roomPassword = request.getRoomPassword();
-		TemplateMap mapId = getTemplateMap(request.getMapId());
-		
-		RoomMananger.getInstance().addRoom(roomName, roomPassword, mapId);
+		MapTemplate mapId = getTemplateMap(request.getMapId());
+
+		RoomManager.getInstance().addRoom(roomName, roomPassword, mapId);
 		return true;
 	}
 
@@ -57,11 +57,11 @@ public class RoomRequestsHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean joinPublicRoom(JoinPublicRoomRequest request) {
-		
+
 		Player player = request.getPlayer();
-		TemplateMap mapId = getTemplateMap(request.getMapId());
-		
-		RoomMananger.getInstance().addPlayerIntoPublicRoom(player, mapId);
+		MapTemplate mapId = getTemplateMap(request.getMapId());
+
+		RoomManager.getInstance().addPlayerIntoPublicRoom(player, mapId);
 		return true;
 
 		// numPlayersConnected++;
@@ -78,12 +78,12 @@ public class RoomRequestsHandler {
 		// player.toString()).build();
 	}
 
-	private TemplateMap getTemplateMap(int mapId) {
-		
-		if (mapId == TemplateMap.GAME_OF_THRONES.id) {
-			return TemplateMap.GAME_OF_THRONES;
+	private MapTemplate getTemplateMap(int mapId) {
+
+		if (mapId == MapTemplate.GAME_OF_THRONES.id) {
+			return MapTemplate.GAME_OF_THRONES;
 		}
-		return TemplateMap.GAME_OF_THRONES;
+		return MapTemplate.GAME_OF_THRONES;
 	}
 
 	@POST
@@ -91,13 +91,14 @@ public class RoomRequestsHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean joinPrivateRoom(JoinPrivateRoomRequest request) {
-		
+
 		int roomId = request.getRoomId();
 		Player player = request.getPlayer();
 		String roomPassword = request.getRoomPassword();
 
 		try {
-			RoomMananger.getInstance().addPlayerIntoPrivateRoom(player, roomId, roomPassword);
+			RoomManager.getInstance().addPlayerIntoPrivateRoom(player, roomId,
+					roomPassword);
 			return true;
 		} catch (RoomNotFoundException e) {
 			// TODO Improve error status
@@ -107,6 +108,5 @@ public class RoomRequestsHandler {
 			return false;
 		}
 	}
-
 
 }

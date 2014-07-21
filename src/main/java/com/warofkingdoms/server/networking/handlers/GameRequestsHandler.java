@@ -1,5 +1,8 @@
 package com.warofkingdoms.server.networking.handlers;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -9,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.warofkingdoms.server.entities.Castle;
+import com.warofkingdoms.server.entities.Player;
 import com.warofkingdoms.server.entities.Room;
 import com.warofkingdoms.server.entities.Student;
 import com.warofkingdoms.server.entities.Territory;
@@ -16,9 +20,10 @@ import com.warofkingdoms.server.entities.Tower;
 import com.warofkingdoms.server.entities.Unit;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.management.GameManager;
-import com.warofkingdoms.server.management.RoomMananger;
+import com.warofkingdoms.server.management.RoomManager;
 import com.warofkingdoms.server.networking.entities.JoinPrivateRoomRequest;
 import com.warofkingdoms.server.networking.entities.StartGameRequest;
+import com.warofkingdoms.server.networking.entities.StartGameResponse;
 
 /**
  * Tutorial followed:
@@ -31,18 +36,29 @@ import com.warofkingdoms.server.networking.entities.StartGameRequest;
 @Path("/games")
 public class GameRequestsHandler {
 
+	private final static Logger LOGGER = Logger
+			.getLogger(GameRequestsHandler.class.getName());
+
 	@POST
 	@Path("/startGame")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean startGame(StartGameRequest request) {
+	// TODO Improve error status
+	public StartGameResponse startGame(StartGameRequest request) {
 		try {
-			Room room = RoomMananger.getInstance().getById(request.getRoomId());
+			// Room room =
+			// RoomManager.getInstance().getById(request.getRoomId());
+			Room room = RoomManager.getInstance().getTestRoom();
+			room.getRequestBlocker().blockUntilRequestIsProcessed(this);
+
 			GameManager game = room.getGameManager();
-			return true;
+
+			List<Unit> updatedUnits = game.getCurrentMap().getUnits();
+			List<Player> allPlayers = game.getPlayers();
+			return new StartGameResponse(allPlayers, updatedUnits);
 		} catch (RoomNotFoundException e) {
-			// TODO Improve error status
-			return false;
+			LOGGER.warning(e.toString());
+			return null;
 		}
 	}
 

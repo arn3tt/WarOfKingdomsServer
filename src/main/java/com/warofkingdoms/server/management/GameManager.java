@@ -4,15 +4,16 @@ import java.util.List;
 
 import com.warofkingdoms.server.entities.Map;
 import com.warofkingdoms.server.entities.Player;
-import com.warofkingdoms.server.entities.TemplateMap;
+import com.warofkingdoms.server.entities.MapTemplate;
 
 public class GameManager {
 
 	private Map map;
 	private List<Player> players;
-//	private Round currentRound;
 
-	public GameManager(TemplateMap mapId) {
+	// private Round currentRound;
+
+	public GameManager(MapTemplate mapId) {
 		this.map = MapCreator.createNewMap(mapId);
 	}
 
@@ -26,5 +27,13 @@ public class GameManager {
 
 	public boolean isFull() {
 		return players.size() == map.getNumPlayers();
+	}
+
+	public Map getCurrentMap() {
+		return map;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
 	}
 }

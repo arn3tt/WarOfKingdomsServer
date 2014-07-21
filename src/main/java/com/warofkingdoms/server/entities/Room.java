@@ -2,6 +2,7 @@ package com.warofkingdoms.server.entities;
 
 import com.warofkingdoms.server.exceptions.WrongRoomPasswordException;
 import com.warofkingdoms.server.management.GameManager;
+import com.warofkingdoms.server.networking.handlers.RequestBlocker;
 
 public class Room {
 
@@ -9,8 +10,9 @@ public class Room {
 	private String name;
 	private boolean isPrivate;
 	private String password;
-	private TemplateMap mapId;
+	private MapTemplate mapTemplate;
 
+	private RequestBlocker requestBlocker;
 	private GameManager game;
 
 	// Must have no-argument constructor
@@ -18,19 +20,24 @@ public class Room {
 
 	}
 
-	public Room(int id, boolean isPrivate, String password, TemplateMap mapId) {
+	public Room(int id, String name, boolean isPrivate, String password,
+			MapTemplate mapTemplate) {
 		this.id = id;
+		this.name = name;
 		this.isPrivate = isPrivate;
 		this.password = password;
-		this.mapId = mapId;
-		this.game = new GameManager(mapId);
+		this.mapTemplate = mapTemplate;
+
+		this.requestBlocker = new RequestBlocker(mapTemplate.maxNumberOfPlayers);
+		this.game = new GameManager(mapTemplate);
 	}
 
 	public boolean isFull() {
 		return game.isFull();
 	}
 
-	public void addPlayer(Player player, String roomPassword) throws WrongRoomPasswordException {
+	public void addPlayer(Player player, String roomPassword)
+			throws WrongRoomPasswordException {
 		if (roomPassword.equals(this.password)) {
 			game.addPlayer(player);
 		} else {
@@ -41,7 +48,7 @@ public class Room {
 	public void addPlayer(Player player) {
 		game.addPlayer(player);
 	}
-	
+
 	// Getters and Setters
 
 	public int getId() {
@@ -76,12 +83,12 @@ public class Room {
 		this.password = password;
 	}
 
-	public TemplateMap getMapId() {
-		return mapId;
+	public MapTemplate getMapTemplate() {
+		return mapTemplate;
 	}
 
-	public void setMapId(TemplateMap mapId) {
-		this.mapId = mapId;
+	public void setMapTemplate(MapTemplate mapId) {
+		this.mapTemplate = mapId;
 	}
 
 	public String getName() {
@@ -90,6 +97,14 @@ public class Room {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public RequestBlocker getRequestBlocker() {
+		return requestBlocker;
+	}
+
+	public void setRequestBlocker(RequestBlocker requestBlocker) {
+		this.requestBlocker = requestBlocker;
 	}
 
 }

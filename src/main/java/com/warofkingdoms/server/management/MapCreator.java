@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.warofkingdoms.server.entities.Map;
-import com.warofkingdoms.server.entities.TemplateMap;
+import com.warofkingdoms.server.entities.MapTemplate;
 import com.warofkingdoms.server.entities.Territory;
 import com.warofkingdoms.server.entities.Unit;
 
@@ -13,7 +13,7 @@ public class MapCreator {
 	private static final int RESOURCES_GAINED_PER_TERRITORY = 1;
 	public final static List<Unit> gotUnits = populateGotUnits();
 
-	public static Map createNewMap(TemplateMap templateMap) {
+	public static Map createNewMap(MapTemplate templateMap) {
 		switch (templateMap) {
 		case GAME_OF_THRONES:
 		default:
@@ -57,6 +57,6 @@ public class MapCreator {
 			gotUnit.clone();
 			gotUnits.add(gotUnit.clone());
 		}
-		return new Map(TemplateMap.GAME_OF_THRONES, 2, gotUnits);
+		return new Map(MapTemplate.GAME_OF_THRONES, 2, gotUnits);
 	}
 }
