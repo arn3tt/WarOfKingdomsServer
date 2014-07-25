@@ -25,14 +25,16 @@ public class RoomManager {
 		return instance;
 	}
 
-	public synchronized void addRoom(String roomName, String roomPassword,
+	public synchronized void addRoom(Player roomOwner, String roomName, String roomPassword,
 			MapTemplate mapId) {
-		Room room = new Room(rooms.size(), roomName, true, roomPassword, mapId);
+
+		Room room = new Room(rooms.size(), roomName, true, roomOwner, roomPassword, mapId);
 		rooms.add(room);
 	}
 
 	public synchronized void addPlayerIntoPublicRoom(Player player,
 			MapTemplate mapId) {
+
 		Room room = getNextAvailablePublicRoom(mapId);
 		room.addPlayer(player);
 	}
@@ -40,6 +42,7 @@ public class RoomManager {
 	public synchronized void addPlayerIntoPrivateRoom(Player player,
 			int roomId, String roomPassword) throws RoomNotFoundException,
 			WrongRoomPasswordException {
+		
 		Room room = getById(roomId);
 		room.addPlayer(player, roomPassword);
 	}
@@ -56,7 +59,8 @@ public class RoomManager {
 	}
 
 	private synchronized Room createPublicRoom(MapTemplate mapId) {
-		Room newRoom = new Room(rooms.size(), "Public Room", false, "", mapId);
+		String roomName = "Public Room "+rooms.size();
+		Room newRoom = new Room(rooms.size(), roomName, false, null, "", mapId);
 		rooms.add(newRoom);
 		return newRoom;
 	}
@@ -69,7 +73,14 @@ public class RoomManager {
 	}
 
 	public List<Room> getPrivateRooms() {
-		return rooms;
+
+		List<Room> privateRooms = new ArrayList<Room>();
+		for (Room aRoom : rooms) {
+			if (aRoom.isPrivate()) {
+				privateRooms.add(aRoom);
+			}
+		}
+		return privateRooms;
 	}
 
 	public List<Room> getPublicRooms() {
@@ -88,7 +99,7 @@ public class RoomManager {
 
 	// TODO DELETE
 
-	private Room testRoom = new Room(0, "Test Room", false, "",
+	private Room testRoom = new Room(0, "Test Room", false, null, "",
 			MapTemplate.GAME_OF_THRONES);
 
 	public Room getTestRoom() throws RoomNotFoundException {

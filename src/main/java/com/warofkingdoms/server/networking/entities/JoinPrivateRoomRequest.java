@@ -7,17 +7,15 @@ public class JoinPrivateRoomRequest {
 	private Player player;
 	private int roomId;
 	private String roomPassword;
-	private int mapId;
 
 	// Must have no-argument constructor
 	public JoinPrivateRoomRequest() {
 
 	}
 
-	public JoinPrivateRoomRequest(Player player, int roomId, int mapId) {
+	public JoinPrivateRoomRequest(Player player, int roomId) {
 		this.player = player;
 		this.roomId = roomId;
-		this.mapId = mapId;
 	}
 
 	public Player getPlayer() {
@@ -42,14 +40,6 @@ public class JoinPrivateRoomRequest {
 
 	public void setRoomPassword(String roomPassword) {
 		this.roomPassword = roomPassword;
-	}
-
-	public int getMapId() {
-		return mapId;
-	}
-
-	public void setMapId(int mapId) {
-		this.mapId = mapId;
 	}
 
 }

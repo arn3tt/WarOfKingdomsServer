@@ -1,7 +1,10 @@
 package com.warofkingdoms.server.networking.entities;
 
+import com.warofkingdoms.server.entities.Player;
+
 public class CreatePrivateRoomRequest {
 
+	private Player owner;
 	private String roomName;
 	private String roomPassword;
 	private int mapId;
@@ -12,10 +15,12 @@ public class CreatePrivateRoomRequest {
 	}
 	
 	public CreatePrivateRoomRequest(
+			Player owner,
 			String roomName, 
 			String roomPassword, 
 			int mapId) {
 		
+		this.owner = owner;
 		this.roomName = roomName;
 		this.roomPassword = roomPassword;
 		this.mapId = mapId;
@@ -43,6 +48,14 @@ public class CreatePrivateRoomRequest {
 
 	public void setMapId(int mapId) {
 		this.mapId = mapId;
+	}
+
+	public Player getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Player owner) {
+		this.owner = owner;
 	}
 	
 	

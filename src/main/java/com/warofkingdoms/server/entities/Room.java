@@ -9,6 +9,7 @@ public class Room {
 	private int id;
 	private String name;
 	private boolean isPrivate;
+	private Player owner;
 	private String password;
 	private MapTemplate mapTemplate;
 
@@ -20,11 +21,12 @@ public class Room {
 
 	}
 
-	public Room(int id, String name, boolean isPrivate, String password,
+	public Room(int id, String name, boolean isPrivate, Player owner, String password,
 			MapTemplate mapTemplate) {
 		this.id = id;
 		this.name = name;
 		this.isPrivate = isPrivate;
+		this.owner = owner;
 		this.password = password;
 		this.mapTemplate = mapTemplate;
 
@@ -105,6 +107,14 @@ public class Room {
 
 	public void setRequestBlocker(RequestBlocker requestBlocker) {
 		this.requestBlocker = requestBlocker;
+	}
+
+	public Player getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Player owner) {
+		this.owner = owner;
 	}
 
 }

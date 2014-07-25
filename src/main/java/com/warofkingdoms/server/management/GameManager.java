@@ -1,5 +1,6 @@
 package com.warofkingdoms.server.management;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.warofkingdoms.server.entities.Map;
@@ -18,6 +19,9 @@ public class GameManager {
 	}
 
 	public void addPlayer(Player player) {
+		if (players == null) {
+			players = new ArrayList<Player>();
+		}
 		players.add(player);
 	}
 
@@ -26,7 +30,10 @@ public class GameManager {
 	}
 
 	public boolean isFull() {
-		return players.size() == map.getNumPlayers();
+		if (players != null && map != null) {
+			return players.size() == map.getNumPlayers(); 
+		}
+		return false;
 	}
 
 	public Map getCurrentMap() {
