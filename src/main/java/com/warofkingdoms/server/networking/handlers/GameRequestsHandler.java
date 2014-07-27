@@ -22,6 +22,7 @@ import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.management.GameManager;
 import com.warofkingdoms.server.management.RoomManager;
 import com.warofkingdoms.server.networking.entities.JoinPrivateRoomRequest;
+import com.warofkingdoms.server.networking.entities.ApplyActionsRequest;
 import com.warofkingdoms.server.networking.entities.StartGameRequest;
 import com.warofkingdoms.server.networking.entities.StartGameResponse;
 
@@ -46,9 +47,14 @@ public class GameRequestsHandler {
 	// TODO Improve error status
 	public StartGameResponse startGame(StartGameRequest request) {
 		try {
-			// Room room =
-			// RoomManager.getInstance().getById(request.getRoomId());
-			Room room = RoomManager.getInstance().getTestRoom();
+			Room room = RoomManager.getInstance().getById(request.getRoomId());
+
+			if (!room.containsPlayer(request.getPlayerId())) {
+				LOGGER.severe(String.format("Player %d is not in the room %d",
+						request.getPlayerId(), request.getRoomId()));
+				return null;
+			}
+
 			room.getRequestBlocker().blockUntilRequestIsProcessed(this);
 
 			GameManager game = room.getGameManager();
@@ -60,6 +66,14 @@ public class GameRequestsHandler {
 			LOGGER.warning(e.toString());
 			return null;
 		}
+	}
+
+	@POST
+	@Path("/applyActions")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean applyActions(ApplyActionsRequest request) {
+		return true;
 	}
 
 	// Testing

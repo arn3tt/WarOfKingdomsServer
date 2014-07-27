@@ -31,4 +31,5 @@ public class Castle extends Unit {
 		c.setLevel(level);
 		return c;
 	}
+
 }

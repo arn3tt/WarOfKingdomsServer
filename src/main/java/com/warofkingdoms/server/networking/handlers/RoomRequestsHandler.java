@@ -121,17 +121,17 @@ public class RoomRequestsHandler {
 	@Path("/joinPublicRoom")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean joinPublicRoom(JoinPublicRoomRequest request) {
+	public int joinPublicRoom(JoinPublicRoomRequest request) {
 
 		Player player = request.getPlayer();
 		MapTemplate mapId = getTemplateMap(request.getMapId());
 
 		if (mapId == null) {
-			return false;
+			return -1;
 		}
 
-		RoomManager.getInstance().addPlayerIntoPublicRoom(player, mapId);
-		return true;
+		Room joinedRoom = RoomManager.getInstance().addPlayerIntoPublicRoom(player, mapId);
+		return joinedRoom.getId();
 
 		// numPlayersConnected++;
 		// if (numPlayersConnected % 2 == 0) {

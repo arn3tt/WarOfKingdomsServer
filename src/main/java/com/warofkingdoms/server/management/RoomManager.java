@@ -32,11 +32,12 @@ public class RoomManager {
 		rooms.add(room);
 	}
 
-	public synchronized void addPlayerIntoPublicRoom(Player player,
+	public synchronized Room addPlayerIntoPublicRoom(Player player,
 			MapTemplate mapId) {
 
 		Room room = getNextAvailablePublicRoom(mapId);
 		room.addPlayer(player);
+		return room;
 	}
 
 	public synchronized void addPlayerIntoPrivateRoom(Player player,
@@ -104,5 +105,9 @@ public class RoomManager {
 
 	public Room getTestRoom() throws RoomNotFoundException {
 		return testRoom;
+	}
+
+	public void reset() {
+		instance = null;
 	}
 }

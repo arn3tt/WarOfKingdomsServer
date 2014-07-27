@@ -16,12 +16,12 @@ public class GameManager {
 
 	public GameManager(MapTemplate mapId) {
 		this.map = MapCreator.createNewMap(mapId);
+		players = new ArrayList<Player>();
 	}
 
 	public void addPlayer(Player player) {
-		if (players == null) {
-			players = new ArrayList<Player>();
-		}
+		player.addConqueredUnit(map.getNextFreeCastle());
+
 		players.add(player);
 	}
 
@@ -31,7 +31,7 @@ public class GameManager {
 
 	public boolean isFull() {
 		if (players != null && map != null) {
-			return players.size() == map.getNumPlayers(); 
+			return players.size() == map.getNumPlayers();
 		}
 		return false;
 	}

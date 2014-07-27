@@ -117,4 +117,13 @@ public class Room {
 		this.owner = owner;
 	}
 
+	public boolean containsPlayer(int playerId) {
+		for (Player player : game.getPlayers()) {
+			if (player.getId() == playerId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

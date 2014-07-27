@@ -36,4 +36,29 @@ public abstract class Unit {
 	public Unit clone() {
 		return null;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Unit other = (Unit) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + " [name=" + name + ", resourcesGainedPerRound="
+				+ resourcesGainedPerRound + "]";
+	}
+
+	
 }
