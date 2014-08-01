@@ -2,12 +2,13 @@ package com.warofkingdoms.server.networking.entities;
 
 import java.util.List;
 
-import com.warofkingdoms.server.entities.Action;
+import com.warofkingdoms.server.entities.actions.Action;
+
 
 public class ApplyActionsRequest {
 
 	private int roomId;
-	private int id;
+	private int playerId;
 	private List<Action> actions;
 
 	// Must have no-argument constructor
@@ -18,7 +19,7 @@ public class ApplyActionsRequest {
 	public ApplyActionsRequest(int roomId, int id, List<Action> actions) {
 		super();
 		this.roomId = roomId;
-		this.id = id;
+		this.playerId = id;
 		this.actions = actions;
 	}
 
@@ -30,12 +31,12 @@ public class ApplyActionsRequest {
 		this.roomId = roomId;
 	}
 
-	public int getId() {
-		return id;
+	public int getPlayerId() {
+		return playerId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setPlayerId(int id) {
+		this.playerId = id;
 	}
 
 	public List<Action> getActions() {

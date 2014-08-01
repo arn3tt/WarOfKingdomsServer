@@ -18,6 +18,7 @@ public class Player {
 	public Player() {
 		resources = STARTING_RESOURCES;
 		conqueredUnits = new ArrayList<Unit>();
+		troops = new ArrayList<Troop>();
 	}
 
 	public int getId() {
@@ -36,12 +37,14 @@ public class Player {
 		this.name = name;
 	}
 
-	public List<Troop> getTroops() {
-		return troops;
+	public int addTroop(Troop troop) {
+		int troopId = troops.size();
+		troops.add(troop);
+		return troopId;
 	}
-
-	public void setTroops(List<Troop> troops) {
-		this.troops = troops;
+	
+	public Troop getTroop(int id) {
+		return troops.get(id);
 	}
 
 	public void addConqueredUnit(Unit unit) {

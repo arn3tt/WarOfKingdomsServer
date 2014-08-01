@@ -4,6 +4,7 @@ public class Troop {
 
 	private Unit position;
 	private int level;
+	private boolean isAlive;
 
 	// Must have no-argument constructor
 	public Troop() {
@@ -31,4 +32,7 @@ public class Troop {
 		this.level = level;
 	}
 
+	public boolean isAlive() {
+		return isAlive;
+	}
 }

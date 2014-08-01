@@ -21,6 +21,7 @@ import com.warofkingdoms.server.entities.Unit;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.management.GameManager;
 import com.warofkingdoms.server.management.RoomManager;
+import com.warofkingdoms.server.networking.entities.ApplyActionsResponse;
 import com.warofkingdoms.server.networking.entities.JoinPrivateRoomRequest;
 import com.warofkingdoms.server.networking.entities.ApplyActionsRequest;
 import com.warofkingdoms.server.networking.entities.StartGameRequest;
@@ -50,7 +51,7 @@ public class GameRequestsHandler {
 			Room room = RoomManager.getInstance().getById(request.getRoomId());
 
 			if (!room.containsPlayer(request.getPlayerId())) {
-				LOGGER.severe(String.format("Player %d is not in the room %d",
+				LOGGER.severe(String.format("Player %d is not in room %d",
 						request.getPlayerId(), request.getRoomId()));
 				return null;
 			}
@@ -72,8 +73,8 @@ public class GameRequestsHandler {
 	@Path("/applyActions")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean applyActions(ApplyActionsRequest request) {
-		return true;
+	public ApplyActionsResponse applyActions(ApplyActionsRequest request) {
+		return null;
 	}
 
 	// Testing
@@ -83,7 +84,7 @@ public class GameRequestsHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public JoinPrivateRoomRequest test(JoinPrivateRoomRequest request) {
-		Unit position = request.getPlayer().getTroops().get(0).getPosition();
+		Unit position = request.getPlayer().getTroop(0).getPosition();
 
 		if (position instanceof Castle) {
 			request.setRoomId(-1);
