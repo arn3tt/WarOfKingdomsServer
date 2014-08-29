@@ -18,12 +18,14 @@ import com.warofkingdoms.server.entities.Student;
 import com.warofkingdoms.server.entities.Territory;
 import com.warofkingdoms.server.entities.Tower;
 import com.warofkingdoms.server.entities.Unit;
+import com.warofkingdoms.server.entities.actions.Action;
+import com.warofkingdoms.server.entities.actions.MoveTroop;
 import com.warofkingdoms.server.exceptions.RoomNotFoundException;
 import com.warofkingdoms.server.management.GameManager;
 import com.warofkingdoms.server.management.RoomManager;
+import com.warofkingdoms.server.networking.entities.ApplyActionsRequest;
 import com.warofkingdoms.server.networking.entities.ApplyActionsResponse;
 import com.warofkingdoms.server.networking.entities.JoinPrivateRoomRequest;
-import com.warofkingdoms.server.networking.entities.ApplyActionsRequest;
 import com.warofkingdoms.server.networking.entities.StartGameRequest;
 import com.warofkingdoms.server.networking.entities.StartGameResponse;
 
@@ -69,11 +71,33 @@ public class GameRequestsHandler {
 		}
 	}
 
+	/*
+	 * TESTS
+	 * 
+	 * LINK: http://localhost:8080/WarOfKingdomsServer/rest/games/applyActions
+	 * 
+	 * JSON-REQUEST: {"roomId" : 1234, "playerId": 12345,
+	 * "actions":[{"type":"moveTroop", "troop":null, "goal":null}]}
+	 */
+	/**
+	 * POST method that receives round actions
+	 * 
+	 * @param request
+	 * @return
+	 */
+	// TODO Improve error status
 	@POST
 	@Path("/applyActions")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ApplyActionsResponse applyActions(ApplyActionsRequest request) {
+
+		int roomId = request.getRoomId();
+		int playerId = request.getPlayerId();
+		List<Action> actions = request.getActions();
+
+		// TODO process data from all player (with semaphore) and generate
+		// proper response
 		return null;
 	}
 
